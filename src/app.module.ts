@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { AppController } from './controllers/app.controller';
+import { AppService } from './services/app.service';
 import { ConfigModule } from '@nestjs/config';
 import * as yaml from 'js-yaml';
 import { readFileSync } from 'fs';
+import { OracleService } from './services/oracle.service';
 
 @Module({
   imports: [
@@ -13,6 +14,6 @@ import { readFileSync } from 'fs';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, OracleService],
 })
 export class AppModule {}
