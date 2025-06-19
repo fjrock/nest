@@ -1,0 +1,4 @@
+oracle:
+  user: system
+  password: MiPassword123
+  connectString: localhost:1521/FREEPDB1
