@@ -1,6 +1,7 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 import { AppService } from '../services/app.service';
 import { OracleService } from '../services/oracle.service';
+import { JwtAuthGuard } from '../config/jwt-auth.guard';
 
 @Controller()
 export class AppController {
@@ -9,18 +10,22 @@ export class AppController {
     private readonly oracleService: OracleService
   ) {}
 
+  @UseGuards(JwtAuthGuard)
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  getHello() {
+    return { mensaje: this.appService.getHello() };
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('saludo')
-  getSaludo(): string {
-    return '¡Hola desde NestJS!';
+  getSaludo() {
+    return { mensaje: '¡Hola desde NestJS!' };
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('mensaje-oracle')
-  async getMensajeOracle(): Promise<string> {
-    return await this.oracleService.obtenerMensaje();
+  async getMensajeOracle() {
+    const mensaje = await this.oracleService.obtenerMensaje();
+    return { mensaje };
   }
 }

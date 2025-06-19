@@ -8,6 +8,8 @@ export class OracleService {
 
   async obtenerMensaje(): Promise<string> {
     const oracleConfig = this.configService.get('oracle');
+    const packageName = oracleConfig.package;
+    const procedureName = oracleConfig.procedure;
     let connection;
     try {
       connection = await oracledb.getConnection({
@@ -16,7 +18,7 @@ export class OracleService {
         connectString: oracleConfig.connectString,
       });
       const result = await connection.execute(
-        `BEGIN PKG_PRUEBA.obtener_mensaje(:p_resultado); END;`,
+        `BEGIN ${packageName}.${procedureName}(:p_resultado); END;`,
         {
           p_resultado: { dir: oracledb.BIND_OUT, type: oracledb.STRING }
         }
